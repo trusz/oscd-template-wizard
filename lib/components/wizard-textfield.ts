@@ -6,7 +6,7 @@ import {
   query,
   TemplateResult,
 } from 'lit-element';
-import { translate, get } from 'lit-translate';
+
 
 import '@material/mwc-icon-button';
 import '@material/mwc-list/mwc-list-item';
@@ -27,10 +27,12 @@ export class WizardTextField extends TextField {
   /** Whether [[`maybeValue`]] may be `null` */
   @property({ type: Boolean })
   nullable = false;
+
   /** Selectable SI multipliers for a non-empty [[`unit`]]. */
   @property({ type: Array })
   multipliers = [null, ''];
   private multiplierIndex = 0;
+
   @property({ type: String })
   get multiplier(): string | null {
     if (this.unit == '') return null;
@@ -43,6 +45,7 @@ export class WizardTextField extends TextField {
     if (index >= 0) this.multiplierIndex = index;
     this.suffix = (this.multiplier ?? '') + this.unit;
   }
+
   /** SI Unit, must be non-empty to allow for selecting a [[`multiplier`]].
    * Overrides `suffix`. */
   @property({ type: String })
@@ -52,12 +55,14 @@ export class WizardTextField extends TextField {
   private get null(): boolean {
     return this.nullable && this.isNull;
   }
+
   private set null(value: boolean) {
     if (!this.nullable || value === this.isNull) return;
     this.isNull = value;
     if (this.null) this.disable();
     else this.enable();
   }
+
   /** Replacement for `value`, can only be `null` if [[`nullable`]]. */
   @property({ type: String })
   get maybeValue(): string | null {
@@ -70,9 +75,11 @@ export class WizardTextField extends TextField {
       this.value = value;
     }
   }
+
   /** The default `value` displayed if [[`maybeValue`]] is `null`. */
   @property({ type: String })
   defaultValue = '';
+
   /** Additional values that cause validation to fail. */
   @property({ type: Array })
   reservedValues: string[] = [];
@@ -185,4 +192,14 @@ export class WizardTextField extends TextField {
       </div>
     `;
   }
+}
+
+// TODO: replace this with something real
+function translate(str: string): string {
+  return str
+}
+
+// TODO: replace this with something real
+function get(str: string): string {
+  return str
 }
