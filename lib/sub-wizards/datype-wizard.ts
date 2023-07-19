@@ -13,6 +13,7 @@ import { patterns } from "./patterns"
 // import "@material/web/icon/icon.js";
 import "../components/wizard-select.js";
 import "../components/wizard-textfield";
+import "@material/mwc-button";
 
 const TAG_NAME = "oscd-datype-wizard"
 const allDataTypeSelector = ["LNodeType", "DOType", "DAType", "EnumType"];
