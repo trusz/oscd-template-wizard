@@ -55,7 +55,7 @@ render() {
 
            
             
-            <wizard-textfield
+            <wizard-select
                 label="id"
                 helper="${translate('scl.id')}"
                 required
@@ -64,14 +64,14 @@ render() {
                 pattern="${patterns.nmToken}"
                 dialogInitialFocus
                 @input=${ bindTargetValue(this, "newId") }
-            ></wizard-textfield>
+            ></wizard-select>
             
-            <wizard-textfield
+            <wizard-select
                 label="desc"
                 helper="${translate('scl.desc')}"
                 nullable
                 pattern="${patterns.normalizedString}"
-            ></wizard-textfield>
+            ></wizard-select>
 
             <wizard-select
                 label="values"

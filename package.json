@@ -10,22 +10,33 @@
     "tsc": "tsc",
     "tsc:watch": "tsc --watch",
     "preview": "npm run build && concurrently npm:_preview npm:tsc:watch npm:build:watch",
-    "_preview": "vite preview --port 61827"
+    "_preview": "vite preview --port 61827",
+    "sb": "storybook dev --port 57718 --quiet --no-open",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@material/mwc-switch": "0.22.1",
-    "@material/mwc-select": "0.22.1",
     "@material/mwc-button": "0.22.1",
     "@material/mwc-icon-button": "0.22.1",
-    "@material/mwc-textfield": "0.22.1",
     "@material/mwc-list": "0.22.1",
     "@material/mwc-menu": "0.22.1",
+    "@material/mwc-select": "0.22.1",
+    "@material/mwc-switch": "0.22.1",
+    "@material/mwc-textfield": "0.22.1",
     "lit-element": "2.5.1",
     "lit-html": "1.4.1"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.1.0",
+    "@storybook/addon-links": "^7.1.0",
+    "@storybook/blocks": "^7.1.0",
+    "@storybook/web-components": "^7.1.0",
+    "@storybook/web-components-vite": "^7.1.0",
     "@types/node": "^20.4.1",
     "concurrently": "^8.2.0",
+    "lit": "^2.7.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.1.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
   }
