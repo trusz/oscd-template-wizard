@@ -6,6 +6,10 @@ import {
 	css,
 	state,
   } from 'lit-element';
+import "./fonts/roboto-v27.css"
+import "./fonts/roboto-mono-v13.css"
+import "./icons/material-icons-outlined.css"
+import "./styles.css"
 
 async function fetchTemplate(): Promise<Document>{
 	const sourceURL = new URL(import.meta.url);

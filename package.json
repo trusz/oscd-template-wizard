@@ -11,7 +11,7 @@
     "tsc:watch": "tsc --watch",
     "preview": "npm run build && concurrently npm:_preview npm:tsc:watch npm:build:watch",
     "_preview": "vite preview --port 61827",
-    "sb": "storybook dev --port 57718 --quiet --no-open",
+    "sb": "storybook dev --port 57718 --no-open",
     "build-storybook": "storybook build"
   },
   "dependencies": {
@@ -26,9 +26,11 @@
     "lit-html": "1.4.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^7.1.0",
     "@storybook/addon-essentials": "^7.1.0",
     "@storybook/addon-links": "^7.1.0",
     "@storybook/blocks": "^7.1.0",
+    "@storybook/builder-vite": "^7.1.0",
     "@storybook/web-components": "^7.1.0",
     "@storybook/web-components-vite": "^7.1.0",
     "@types/node": "^20.4.1",
