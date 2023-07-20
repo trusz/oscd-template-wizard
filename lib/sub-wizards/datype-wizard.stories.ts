@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { action } from '@storybook/addon-actions';
+import { withActions } from '@storybook/addon-actions/decorator';
 import './datype-wizard';
 import {html} from "lit"
 
@@ -16,8 +16,6 @@ const meta = {
             .templates=${templates} 
             .tagName=${args.tagName}
             .parent=${parent}
-            @oscd-edit=${action('oscd-edit')}
-            @oscd-wizard-finished=${action('oscd-wizard-finished')}
         >
         </oscd-datype-wizard>
         `
@@ -26,6 +24,15 @@ const meta = {
         tagName: { control: 'text' },
         parent: { control: 'text' },
     },
+	parameters: {
+		actions: {
+			handles: [
+				'oscd-edit', 
+				'oscd-wizard-finished',
+			],
+		},
+	  },
+	decorators: [withActions],
 } satisfies Meta;
 
 export default meta;
