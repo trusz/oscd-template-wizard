@@ -1,4 +1,6 @@
 import {
+    css,
+    CSSResult,
     customElement,
     html,
     internalProperty,
@@ -142,7 +144,7 @@ export class WizardTextField extends TextField {
         }
 
         return html`
-            <div style="position:relative;">
+            <form style="position:relative;">
                 <mwc-icon-button
                     style="margin:5px;"
                     icon="more"
@@ -157,7 +159,7 @@ export class WizardTextField extends TextField {
                     ${this.renderMulplierList()}
                 </mwc-menu
             >
-            </div>
+            </form>
         `;
     }
         

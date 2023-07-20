@@ -1,19 +1,22 @@
 import {
-	html,
+	// html,
 	property,
-	LitElement,
+	// LitElement,
     customElement,
-    TemplateResult,
-    css,
+    // TemplateResult,
+    // css,
 	state,
   } from 'lit-element';
+
+import { css, html, LitElement, TemplateResult } from 'lit';
 import { patterns } from "./patterns"
 
-// import "@material/web/button/text-button.js"
-// import "@material/web/icon/icon.js";
-import "../components/wizard-select.js";
+import "../components/wizard-select";
 import "../components/wizard-textfield";
+import "../components/wizard-card";
+import "../icons/material-icons-outlined.css"
 import "@material/mwc-button";
+
 
 const TAG_NAME = "oscd-datype-wizard"
 const allDataTypeSelector = ["LNodeType", "DOType", "DAType", "EnumType"];
@@ -34,88 +37,76 @@ export function createElement(
 @customElement(TAG_NAME)
 export class DATypeWizard extends LitElement {
     
-    @property({ type: Document}) templates: Document = new Document();
+    @property({ type: Document}) templates: Document | undefined
     @property({ type: String }) tagName: string = "";
     @property({ type: Element }) parent: Element | undefined;
 
-    public newId: string = "";
+    public newId = "";
+    public newDesc = "";
+    public newValueTemplate = "";
     
-render() {
+    render() {
+        return html`
+            <wizard-card>
+                <h2 slot="header">Add DAType</h2>
+                <div class="form">
+                    <wizard-select
+                        label="values"
+                        name="values"
+                        .maybeValue=${''}
+                        required
+                        icon="playlist_add_check"
+                        maxlength="255"
+                        minlength="1"
+                        fixedMenuPosition
+                        pattern="${patterns.nmToken}"
+                        @change=${ bindTargetValue(this, "newValueTemplate") }
+                    >
+                        ${ this.renderValueListItems() }
+                    </wizard-select>
 
+                    <wizard-textfield
+                        label="id"
+                        name="id"
+                        helper="${translate('scl.id')}"
+                        required
+                        maxlength="127"
+                        minlength="1"
+                        pattern="${patterns.nmToken}"
+                        dialogInitialFocus
+                        @input=${ bindTargetValue(this, "newId") }
+                    ></wizard-textfield>
+                    
+                    <wizard-textfield
+                        label="desc"
+                        name="desc"
+                        helper="${translate('scl.desc')}"
+                        nullable
+                        pattern="${patterns.normalizedString}"
+                        @input=${ bindTargetValue(this, "newDesc") }
+                    ></wizard-textfield>
 
-    return html`
-        <form @submit=${this.handleSubmit}>
-            <h2>Add DAType</h2>
-            <!-- <label>
-                <span>Values</span>
-                <select name="values">
-                    ${ this.renderValueListItems() }
-                </select>
-            </label> -->
+                    
+                </div>
 
-           
+                <footer slot="footer">
+                    <mwc-button @click=${() => {}}>
+                        Cancel
+                    </mwc-button>
+
+                    <mwc-button trailingIcon icon="add" @click=${this.handleSubmit}>
+                        Add
+                    </mwc-button>
+                </footer>
+            </wizard-card>
             
-            <wizard-select
-                label="id"
-                helper="${translate('scl.id')}"
-                required
-                maxlength="127"
-                minlength="1"
-                pattern="${patterns.nmToken}"
-                dialogInitialFocus
-                @input=${ bindTargetValue(this, "newId") }
-            ></wizard-select>
-            
-            <wizard-select
-                label="desc"
-                helper="${translate('scl.desc')}"
-                nullable
-                pattern="${patterns.normalizedString}"
-            ></wizard-select>
-
-            <wizard-select
-                label="values"
-                helper="${translate('scl.id')}"
-                .maybeValue=${''}
-                required
-                maxlength="255"
-                minlength="1"
-                pattern="${patterns.nmToken}"
-                dialogInitialFocus
-            >
-                ${ this.renderValueListItems() }
-            </wizard-select>
-
-            <footer>
-                <mwc-button
-                    label="cancel"
-                    @click=${() => {}}
-                >
-                </mwc-button>
-
-                <mwc-button
-                    icon="add"
-                    label="Add"
-                    @click=${() => {}}
-                >
-                </mwc-button>
-
-                <!-- <md-text-button @click=${this.handleOnClickCancel}>
-                    Cancel
-                </md-text-button>
-                <md-text-button trailing-icon type="submit" @click=${this.handleOnClickAdd}>
-                    Add
-                    <md-icon slot="icon" aria-hidden="true">add</md-icon>
-                </md-text-button> -->
-            </footer>
-        </form>
-        
-        `
+            `
     }
 
     private renderValueListItems(): TemplateResult[] {
-        return Array.from(this.templates.querySelectorAll('DAType'))
-        .map(this.renderValueItem)
+        return Array
+            .from(this.templates.querySelectorAll('DAType'))
+            .map(this.renderValueItem)
     }
 
     private renderValueItem(datype: Element): TemplateResult {
@@ -138,10 +129,11 @@ render() {
    
 
     static styles = css`
-		form {
+		.form {
 			display: flex;
             flex-direction: column;
-            gap: 1rem
+            gap: 1rem;
+            padding: 1rem;
 		}
 
         footer{
@@ -158,17 +150,11 @@ render() {
 
 	`;
 
-    private handleSubmit(event: FormDataEvent) {
-        event.preventDefault()
-        const form = event.target as HTMLFormElement
-        const formData = new FormData(form)
-        const templateId = formData.get('values') as string
-        const id = formData.get('id') as string
-        const desc = formData.get('desc') as string
+    private handleSubmit() {
 
-        console.log({level:"dev", message: "prepping event", valuesTemplateId: templateId, id, desc, parent: this.parent, tagName: this.tagName})
+        console.log({level:"dev", message: "prepping event", newId: this.newId, newDesc: this.newDesc, newValueTemplate: this.newValueTemplate})
 
-        this.createDAType(id, desc, templateId)
+        this.createDAType(this.newId, this.newDesc, this.newValueTemplate)
     }
 
     private createDAType(
@@ -201,41 +187,19 @@ render() {
             element = <Element>selectedTemplate.cloneNode(true)
         }
 
-
         element.setAttribute('id', id);
         element.setAttribute('desc', desc);
-        // const selectedElement = values.selected
-        //   ? this.templates.querySelector(`DAType[id="${valuesTemplateId}"]`)
-        //   : null;
-
-
-
-        // const element = values.selected
-        //   ? <Element>selectedElement!.cloneNode(true)
-        //   : createElement(parent.ownerDocument, 'DAType', {});
-
-
-        // const actions: Create[] = [];
-
-        // if (selectedElement)
-        //   addReferencedDataTypes(selectedElement, parent).forEach(action =>
-        //     actions.push(action)
-        //   );
 
         const eventDetails = {
             parent: this.parent,
-            node:element
+            node: element
         }
 
         const event = new CustomEvent("oscd-edit", {detail: eventDetails, bubbles: true, composed: true})
-        this.dispatchEvent(event)
 
-        // actions.push({
-        //   new: {
-        //     parent,
-        //     element,
-        //   },
-        // });
+        // TODO: there was more here, check original
+
+        this.dispatchEvent(event)
     }
 
     private handleOnClickCancel(){

@@ -78,13 +78,17 @@ export class WizardSelect extends Select {
     }
 
     render(): TemplateResult {
+        return super.render()
+
         return html`
-            <div style="display: flex; flex-direction: row;">
-                <div style="flex: auto;">${super.render()}</div>
-                <div style="display: flex; align-items: center; height: 56px;">
+            <form style="display: flex; flex-direction: row;">
+                <form style="flex: auto;">
+                    ${super.render()}
+                </form>
+                <form style="display: flex; align-items: center; height: 56px;">
                     ${this.renderSwitch()}
-                </div>
-            </div>
+                </form>
+            </form>
         `;
     }
 

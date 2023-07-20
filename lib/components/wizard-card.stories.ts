@@ -11,12 +11,12 @@ const meta = {
     tags: ['autodocs'],
     render: (args) => {
         return html`
-		<div class="container" style=${`width: ${args.width}px; height: ${args.height}px;`}>
+		<form class="container" style=${`width: ${args.width}px; height: ${args.height}px;`}>
 			<wizard-card>
 				<h2 slot="header">
 					Quest: The Electromagnetic Odyssey
 				</h2>
-				<div>
+				<form>
 					Embark on a journey through the Electromagnetic Odyssey, 
 					where you'll decode the Resistor Maze, 
 					unlock the Capacitor Riddles, and unravel the Inductor Enigma. 
@@ -24,13 +24,13 @@ const meta = {
 					to uncover the wisdom of Professor Ohm. 
 					Conquer the Circuit Conundrum to become a 
 					legendary electrical engineer! Do you accept?
-				</div>
-				<div slot="footer" class="footer">
+				</form>
+				<form slot="footer" class="footer">
 					<mwc-button>Cancel</mwc-button>
 					<mwc-button outlined>Accept</mwc-button>
-				</div>
+				</form>
 			</wizard-card>
-		</div>
+		</form>
 		<style>
 			.container{
 				border: gray thin solid;

@@ -1,4 +1,4 @@
-import { CSSResultGroup, LitElement, css, customElement } from "lit-element";
+import { LitElement, css, customElement } from "lit-element";
 import { TemplateResult, html } from "lit-html";
 import "../fonts/roboto-v27.css"
 
@@ -8,11 +8,11 @@ export class WizardCard extends LitElement {
 
 	render(): TemplateResult {
 		return html`
-			<div class="container">
+			<form class="container">
 				<slot name="header" class="header"></slot>
 				<slot class="content"></slot>
 				<slot name="footer"></slot>
-			</div>
+            </form>
 		`
 	}
 
@@ -36,7 +36,6 @@ export class WizardCard extends LitElement {
             text-overflow: ellipsis;
             overflow: auto;
             display: block;
-            
         }
     
     

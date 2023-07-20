@@ -7,9 +7,9 @@ import {
 	state,
   } from 'lit-element';
 import "./fonts/roboto-v27.css"
-import "./fonts/roboto-mono-v13.css"
-import "./icons/material-icons-outlined.css"
-import "./styles.css"
+// import "./fonts/roboto-mono-v13.css"
+// import "./icons/material-icons-outlined.css"
+// import "./styles.css"
 
 async function fetchTemplate(): Promise<Document>{
 	const sourceURL = new URL(import.meta.url);
@@ -38,7 +38,7 @@ export class OSCDTemplateWizard extends LitElement {
 
 	render() {
 		return html`
-			<div>
+			<form>
 				<oscd-datype-wizard 
 					.templates=${this.templates} 
 					.tagName=${this.tagName}
@@ -46,7 +46,7 @@ export class OSCDTemplateWizard extends LitElement {
 					.parent=${this.parent}
 				>
 				</oscd-datype-wizard>
-			</div>
+			</form>
 		`;
 	}
 

@@ -30,11 +30,11 @@ export class Demo extends LitElement {
     
     render() {
         return html`
-        <div class="container">
-            <div class="fake-dialog">
+        <form class="container">
+            <form class="fake-dialog">
                 <oscd-template-wizard></oscd-template-wizard>
-            </div>
-        </div>
+            </form>
+        </form>
         `
     }
     
