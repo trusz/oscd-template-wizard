@@ -90,11 +90,11 @@ export class DATypeWizard extends LitElement {
                 </div>
 
                 <footer slot="footer">
-                    <mwc-button @click=${() => {}}>
+                    <mwc-button @click=${this.handleOnClickCancel}>
                         Cancel
                     </mwc-button>
 
-                    <mwc-button trailingIcon icon="add" @click=${this.handleSubmit}>
+                    <mwc-button trailingIcon icon="add" @click=${this.handleOnClickAdd}>
                         Add
                     </mwc-button>
                 </footer>
@@ -150,14 +150,15 @@ export class DATypeWizard extends LitElement {
 
 	`;
 
-    private handleSubmit() {
+    private emitDATypeCreation() {
 
         console.log({level:"dev", message: "prepping event", newId: this.newId, newDesc: this.newDesc, newValueTemplate: this.newValueTemplate})
 
-        this.createDAType(this.newId, this.newDesc, this.newValueTemplate)
+        const event = this.makeDATypeCreationEvent(this.newId, this.newDesc, this.newValueTemplate)
+        this.dispatchEvent(event)
     }
 
-    private createDAType(
+    private makeDATypeCreationEvent(
         id: string, 
         desc: string, 
         templateId: string,
@@ -198,8 +199,7 @@ export class DATypeWizard extends LitElement {
         const event = new CustomEvent("oscd-edit", {detail: eventDetails, bubbles: true, composed: true})
 
         // TODO: there was more here, check original
-
-        this.dispatchEvent(event)
+        return event
     }
 
     private handleOnClickCancel(){
@@ -207,6 +207,7 @@ export class DATypeWizard extends LitElement {
     }
 
     private handleOnClickAdd(){
+        this.emitDATypeCreation()
         this.signalFinished()
     }
 

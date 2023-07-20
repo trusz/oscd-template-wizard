@@ -17,6 +17,7 @@ const meta = {
             .tagName=${args.tagName}
             .parent=${parent}
             @oscd-edit=${action('oscd-edit')}
+            @oscd-wizard-finished=${action('oscd-wizard-finished')}
         >
         </oscd-datype-wizard>
         `
