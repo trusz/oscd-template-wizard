@@ -1,23 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
-import './datype-wizard';
+import './datype-creator-wizard';
 import {html} from "lit"
 
 // More on how to set up stories at: https://storybook.js.org/docs/web-components/writing-stories/introduction
 const meta = {
-    title: 'Sub Wziards / Data Attribute Type',
+    title: 'Sub Wziards / Data Attribute Type Creator',
     tags: ['autodocs'],
     render: (args) => {
 		const templates = getMockTemplate();
         const parent = new DOMParser().parseFromString(args.parent, 'text/html').body.firstChild as HTMLElement;
-		console.log({level:"dev", parent, templates})
+
         return html`
-        <oscd-datype-wizard 
-            .templates=${templates} 
-            .tagName=${args.tagName}
-            .parent=${parent}
-        >
-        </oscd-datype-wizard>
+			<oscd-datype-creator-wizard 
+				.templates=${templates} 
+				.tagName=${args.tagName}
+				.parent=${parent}
+			>
+			</oscd-datype-creator-wizard>
         `
     },
     argTypes: {

@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "http://trusz.github.io/oscd-template-wizard",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,7 +13,10 @@
     "preview": "npm run build && concurrently npm:_preview npm:tsc:watch npm:build:watch",
     "_preview": "vite preview --port 61827",
     "sb": "storybook dev --port 57718 --no-open",
-    "build-storybook": "storybook build"
+    "sb:build": "storybook build",
+    "predeploy": "npm run sb:build",
+    "deploy-storybook": "gh-pages -d storybook-static",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@material/mwc-button": "0.22.1",
@@ -35,6 +39,7 @@
     "@storybook/web-components-vite": "^7.1.0",
     "@types/node": "^20.4.1",
     "concurrently": "^8.2.0",
+    "gh-pages": "^5.0.0",
     "lit": "^2.7.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,4 +1,4 @@
-import "./sub-wizards/datype-wizard"
+import "./sub-wizards/datype-creator-wizard"
 import {
 	html,
 	property,
@@ -39,13 +39,13 @@ export class OSCDTemplateWizard extends LitElement {
 	render() {
 		return html`
 			<form>
-				<oscd-datype-wizard 
+				<oscd-datype-creator-wizard 
 					.templates=${this.templates} 
 					.tagName=${this.tagName}
 					.element=${this.element}
 					.parent=${this.parent}
 				>
-				</oscd-datype-wizard>
+				</oscd-datype-creator-wizard>
 			</form>
 		`;
 	}

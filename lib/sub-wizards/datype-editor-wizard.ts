@@ -18,7 +18,7 @@ import "../icons/material-icons-outlined.css"
 import "@material/mwc-button";
 
 
-const TAG_NAME = "oscd-datype-wizard"
+const TAG_NAME = "oscd-datype-editor-wizard"
 const allDataTypeSelector = ["LNodeType", "DOType", "DAType", "EnumType"];
 
 // Should be in a shared package somewhere
@@ -35,7 +35,7 @@ export function createElement(
 }
 
 @customElement(TAG_NAME)
-export class DATypeWizard extends LitElement {
+export class DATypeEditorWizard extends LitElement {
     
     @property({ type: Document}) templates: Document | undefined
     @property({ type: String }) tagName: string = "";
@@ -230,7 +230,7 @@ function translate(key: string): string {
 
 declare global {
     interface HTMLElementTagNameMap {
-        [TAG_NAME]: DATypeWizard;
+        [TAG_NAME]: DATypeEditorWizard;
     }
 }
 
