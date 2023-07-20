@@ -1,3 +1,0 @@
-const a="[:_A-Za-z]|[À-Ö]|[Ø-ö]|[ø-˿]|[Ͱ-ͽ]|[Ϳ-῿]|[‌-‍]|[⁰-↏]|[Ⰰ-⿯]|[、-퟿]|[豈-﷏]|[ﷰ-�]",e=a+"|[.0-9\\-]|·|[̀-ͯ]|[‿-⁀]",n="("+e+")+",s={string:`([	-
-]|[\r]|[ -~]|[]|[ -퟿]|[-�])*`,normalizedString:"([ -~]|[]|[ -퟿]|[-�])*",name,nmToken:n,names:name+"( "+name+")*",nmTokens:n+"( "+n+")*",decimal:"[+\\-]?[0-9]+(([.][0-9]*)?|([.][0-9]+))",unsigned:"[+]?[0-9]+(([.][0-9]*)?|([.][0-9]+))",integer:"[+\\-]?[0-9]+([0-9]*)",alphanumericFirstUpperCase:"[A-Z][0-9,A-Z,a-z]*",alphanumericFirstLowerCase:"[a-z][0-9,A-Z,a-z]*",lnClass:"(LLN0)|[A-Z]{4,4}"};export{s as p};
-//# sourceMappingURL=material-icons-outlined-508babe6.js.map
