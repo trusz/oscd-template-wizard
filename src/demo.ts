@@ -3,7 +3,6 @@
 import {
     customElement,
     html,
-    property,
     LitElement,
     css,
 } from 'lit-element';

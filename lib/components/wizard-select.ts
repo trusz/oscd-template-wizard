@@ -1,5 +1,4 @@
 import {
-    css,
     customElement,
     html,
     internalProperty,
@@ -29,7 +28,6 @@ export class WizardSelect extends Select {
 
     /** 
      * Replacement for `value`, can only be `null` if [[`nullable`]]. 
-     * 
      */
     @property({ type: String })
     get maybeValue(): string | null {

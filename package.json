@@ -14,9 +14,7 @@
     "_preview": "vite preview --port 61827",
     "sb": "storybook dev --port 57718 --no-open",
     "sb:build": "storybook build",
-    "predeploy": "npm run sb:build",
-    "deploy-storybook": "gh-pages -d storybook-static",
-    "build-storybook": "build-storybook"
+    "sb:deploy": "npm run sb:build && gh-pages -d storybook-static"
   },
   "dependencies": {
     "@material/mwc-button": "0.22.1",
@@ -26,6 +24,7 @@
     "@material/mwc-select": "0.22.1",
     "@material/mwc-switch": "0.22.1",
     "@material/mwc-textfield": "0.22.1",
+    "@storybook/manager-api": "^7.1.0",
     "lit-element": "2.5.1",
     "lit-html": "1.4.1"
   },

@@ -13,6 +13,7 @@ import "./fonts/roboto-v27.css"
 
 async function fetchTemplate(): Promise<Document>{
 	const sourceURL = new URL(import.meta.url);
+	console.log({level:"dev", url:import.meta.url, urlstr: String(sourceURL)} )
 	const sourceOrigin = sourceURL.origin;
 	
 	const url = new URL("/templates.scd", sourceOrigin);
@@ -56,14 +57,16 @@ export class OSCDTemplateWizard extends LitElement {
 	}
 
 
+	private static supportedTagNames = ["DAType", "DOType", "LNodeType", "EnumType"]
 	public static canInspect(tagName: string): boolean {
 
-		return true;
+		const isSupported = this.supportedTagNames.includes(tagName);
+		return isSupported;
 	}
 
 	public static canCreate(tagName: string): boolean {
-
-		return true;
+		const isSupported = this.supportedTagNames.includes(tagName);
+		return isSupported
 	}
 
 	static styles = css`

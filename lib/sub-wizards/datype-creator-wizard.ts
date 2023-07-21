@@ -5,7 +5,6 @@ import {
     customElement,
     // TemplateResult,
     // css,
-	state,
   } from 'lit-element';
 
 import { css, html, LitElement, TemplateResult } from 'lit';
@@ -52,7 +51,6 @@ export class DATypeCreatorWizard extends LitElement {
                 <div class="form">
                     <wizard-select
                         label="values"
-                        name="values"
                         .maybeValue=${''}
                         required
                         icon="playlist_add_check"
@@ -67,7 +65,6 @@ export class DATypeCreatorWizard extends LitElement {
 
                     <wizard-textfield
                         label="id"
-                        name="id"
                         helper="${translate('scl.id')}"
                         required
                         maxlength="127"
@@ -79,7 +76,6 @@ export class DATypeCreatorWizard extends LitElement {
                     
                     <wizard-textfield
                         label="desc"
-                        name="desc"
                         helper="${translate('scl.desc')}"
                         nullable
                         pattern="${patterns.normalizedString}"
@@ -105,7 +101,7 @@ export class DATypeCreatorWizard extends LitElement {
 
     private renderValueListItems(): TemplateResult[] {
         return Array
-            .from(this.templates.querySelectorAll('DAType'))
+            .from(this.templates?.querySelectorAll('DAType') ?? [])
             .map(this.renderValueItem)
     }
 
@@ -170,7 +166,7 @@ export class DATypeCreatorWizard extends LitElement {
         if(!id){ throw new Error('id is required') }
 
         const idExists = Array
-            .from(this.templates.querySelectorAll(allDataTypeSelector.join(",")))
+            .from(this.templates?.querySelectorAll(allDataTypeSelector.join(",")) ?? [] )
             .some(type => type.getAttribute('id') === id)
 
         if (idExists){ throw new Error(`id '${id}' already exists`) }
@@ -178,10 +174,10 @@ export class DATypeCreatorWizard extends LitElement {
         // const desc = getValue(inputs.find(i => i.label === 'desc')!);
         // const values = <Select>inputs.find(i => i.label === 'values');
 
-        let selectedTemplate: Element | null = null;
+        let selectedTemplate: Element | null | undefined;
         let element = createElement(this.parent.ownerDocument, 'DAType', {});
         if(templateId){
-            selectedTemplate = this.templates.querySelector(`DAType[id="${templateId}"]`)
+            selectedTemplate = this.templates?.querySelector(`DAType[id="${templateId}"]`)
         }
 
         if(selectedTemplate){

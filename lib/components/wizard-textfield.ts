@@ -1,6 +1,4 @@
 import {
-    css,
-    CSSResult,
     customElement,
     html,
     internalProperty,
@@ -92,7 +90,7 @@ export class WizardTextField extends TextField {
     
     @query('mwc-switch') nullSwitch?: Switch;
     @query('mwc-menu') multiplierMenu?: Menu;
-    @query('mwc-icon-button') multiplierButton?: IconButton;
+    @query('mwc-icon-button') multiplierButton?: IconButton | null
 
 
     private isNull = false;
@@ -143,6 +141,8 @@ export class WizardTextField extends TextField {
             return html``;
         }
 
+        // we cast `this.multiplierButton` because in typing there is a small difference
+        // between `null` and `undefined` but it does not matter for us
         return html`
             <form style="position:relative;">
                 <mwc-icon-button
@@ -154,7 +154,7 @@ export class WizardTextField extends TextField {
                 <mwc-menu
                     @selected=${this.selectMultiplier}
                     fixed
-                    .anchor=${this.multiplierButton ?? null}
+                    .anchor=${this.multiplierButton as (HTMLElement | null) }
                 >
                     ${this.renderMulplierList()}
                 </mwc-menu
@@ -228,7 +228,9 @@ export class WizardTextField extends TextField {
     async firstUpdated(): Promise<void> {
         await super.firstUpdated();
         if (this.multiplierMenu){
-           this.multiplierMenu.anchor = this.multiplierButton ?? null;
+            // we cast the element because in typing there is a small difference
+            // between `null` and `undefined` but it does not matter for us
+           this.multiplierMenu.anchor = this.multiplierButton as (HTMLElement | null)
         }
     }
         
