@@ -1,21 +1,22 @@
 import {
-	// html,
 	property,
-	// LitElement,
+    state,
     customElement,
-    // TemplateResult,
-    // css,
-	state,
-  } from 'lit-element';
-
+} from 'lit-element';
+  
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { patterns } from "./patterns"
-
+  
+import "@material/mwc-button";
+import "@material/mwc-list";
+  
 import "../components/wizard-select";
 import "../components/wizard-textfield";
 import "../components/wizard-card";
 import "../icons/material-icons-outlined.css"
-import "@material/mwc-button";
+import { patterns } from "./patterns"
+import { Optional } from "../x/type-helper"
+import { bindTargetValue } from "../x/value-binder"
+import { identity } from '../x/foundation';
 
 
 const TAG_NAME = "oscd-datype-editor-wizard"
@@ -37,37 +38,35 @@ export function createElement(
 @customElement(TAG_NAME)
 export class DATypeEditorWizard extends LitElement {
     
-    @property({ type: Document}) templates: Document | undefined
-    @property({ type: String }) tagName: string = "";
-    @property({ type: Element }) parent: Element | undefined;
+    @property({ type: Document}) templates?: Document
+    @property({ type: Document}) set element(element?: Document){
+        this._element = element
+    }
+    get element(): Optional<Document>{ 
+        return this._element
+    }
+
+    
+    @state() private _element?: Document
 
     public newId = "";
     public newDesc = "";
     public newValueTemplate = "";
     
     render() {
+        
+        const id = this._element?.documentElement.getAttribute("id") ?? ""
+        const desc = this._element?.documentElement.getAttribute("desc") ?? ""
+        const bdas = Array.from(this._element?.documentElement.querySelectorAll("BDA") ?? [])
+        
         return html`
             <wizard-card>
-                <h2 slot="header">Add DAType</h2>
+                <h2 slot="header">Edit DAType</h2>
                 <div class="form">
-                    <wizard-select
-                        label="values"
-                        name="values"
-                        .maybeValue=${''}
-                        required
-                        icon="playlist_add_check"
-                        maxlength="255"
-                        minlength="1"
-                        fixedMenuPosition
-                        pattern="${patterns.nmToken}"
-                        @change=${ bindTargetValue(this, "newValueTemplate") }
-                    >
-                        ${ this.renderValueListItems() }
-                    </wizard-select>
-
                     <wizard-textfield
                         label="id"
                         name="id"
+                        maybeValue=${id}
                         helper="${translate('scl.id')}"
                         required
                         maxlength="127"
@@ -80,22 +79,31 @@ export class DATypeEditorWizard extends LitElement {
                     <wizard-textfield
                         label="desc"
                         name="desc"
+                        maybeValue=${desc}
                         helper="${translate('scl.desc')}"
                         nullable
                         pattern="${patterns.normalizedString}"
                         @input=${ bindTargetValue(this, "newDesc") }
                     ></wizard-textfield>
 
+                    <mwc-list>
+                        ${ bdas.map(bda => this.renderBDA(bda)) }
+                    </mwc-list>
+
                     
                 </div>
 
                 <footer slot="footer">
-                    <mwc-button @click=${this.handleOnClickCancel}>
-                        Cancel
+                    <!-- 
+                        TODO: needs the correct color --mdc-theme-error, 
+                        but it is not yet available here for some reason
+                    -->
+                    <mwc-button @click=${this.handleOnClickCancel} style="--mdc-theme-primary: red">
+                        CLOSE
                     </mwc-button>
 
-                    <mwc-button trailingIcon icon="add" @click=${this.handleOnClickAdd}>
-                        Add
+                    <mwc-button @click=${this.handleOnClickAdd}>
+                        Save
                     </mwc-button>
                 </footer>
             </wizard-card>
@@ -103,29 +111,40 @@ export class DATypeEditorWizard extends LitElement {
             `
     }
 
-    private renderValueListItems(): TemplateResult[] {
-        return Array
-            .from(this.templates.querySelectorAll('DAType'))
-            .map(this.renderValueItem)
-    }
 
-    private renderValueItem(datype: Element): TemplateResult {
+    private renderBDA(bda: Element): TemplateResult { 
+
+        const value = identity(bda)
+        const name = bda.getAttribute('name')
+        const bType = bda.getAttribute('bType')
+        const type = bda.getAttribute("type")
+        
+        let displayedType = bType
+        if(this.isEnumOrStruct(bType)){
+            displayedType = `#${type}`
+        }
+
+        // ${bda.getAttribute('bType') === 'Enum' || bda.getAttribute('bType') === 'Struct'
+        // ? '#' + bda.getAttribute('type')
+        // : bda.getAttribute('bType')}
+
         return html`
-            <mwc-list-item
-                graphic="icon"
-                hasMeta
-                value="${datype.getAttribute('id') ?? ''}"
-            >
+            <mwc-list-item twoline tabindex="0" value="${value}">
                 <span>
-                    ${datype.getAttribute('id')?.replace('OpenSCD_', '')}
+                    ${name}
                 </span>
-                <span slot="meta">
-                    ${datype.querySelectorAll('BDA').length}
+                <span slot="secondary">
+                    ${displayedType}
                 </span>
             </mwc-list-item>
         `
     }
 
+    private isEnumOrStruct(bType: string | null): boolean {
+        return bType === 'Enum' || bType === 'Struct'
+    }
+
+  
    
 
     static styles = css`
@@ -150,55 +169,30 @@ export class DATypeEditorWizard extends LitElement {
 
 	`;
 
-    private emitDATypeCreation() {
+    private emitDATypeChange() {
 
-        console.log({level:"dev", message: "prepping event", newId: this.newId, newDesc: this.newDesc, newValueTemplate: this.newValueTemplate})
-
-        const event = this.makeDATypeCreationEvent(this.newId, this.newDesc, this.newValueTemplate)
+        const event = this.makeDATypeChangeEvent(this.newId, this.newDesc, this.newValueTemplate)
         this.dispatchEvent(event)
     }
 
-    private makeDATypeCreationEvent(
+    private makeDATypeChangeEvent(
         id: string, 
         desc: string, 
         templateId: string,
     ) {
-        // const id = getValue(inputs.find(i => i.label === 'id')!);
 
-        if(!this.parent){ throw new Error('parent is required') }
-        if(this.tagName === ''){ throw new Error('tagName is required') }
         if(!id){ throw new Error('id is required') }
-
-        const idExists = Array
-            .from(this.templates.querySelectorAll(allDataTypeSelector.join(",")))
-            .some(type => type.getAttribute('id') === id)
-
-        if (idExists){ throw new Error(`id '${id}' already exists`) }
-
-        // const desc = getValue(inputs.find(i => i.label === 'desc')!);
-        // const values = <Select>inputs.find(i => i.label === 'values');
-
-        let selectedTemplate: Element | null = null;
-        let element = createElement(this.parent.ownerDocument, 'DAType', {});
-        if(templateId){
-            selectedTemplate = this.templates.querySelector(`DAType[id="${templateId}"]`)
-        }
-
-        if(selectedTemplate){
-            element = <Element>selectedTemplate.cloneNode(true)
-        }
+        const element = <Element>this._element?.documentElement.cloneNode(true)
 
         element.setAttribute('id', id);
         element.setAttribute('desc', desc);
 
         const eventDetails = {
-            parent: this.parent,
-            node: element
+            element
         }
 
         const event = new CustomEvent("oscd-edit", {detail: eventDetails, bubbles: true, composed: true})
 
-        // TODO: there was more here, check original
         return event
     }
 
@@ -207,7 +201,7 @@ export class DATypeEditorWizard extends LitElement {
     }
 
     private handleOnClickAdd(){
-        this.emitDATypeCreation()
+        this.emitDATypeChange()
         this.signalFinished()
     }
 
@@ -235,10 +229,3 @@ declare global {
 }
 
 
-function bindTargetValue<T>(obj: T, key: keyof T){
-    return function( event: Event){
-        const target = event.target as HTMLInputElement
-        // @ts-ignore
-        obj[key] = target.value
-    }
-}

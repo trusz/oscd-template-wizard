@@ -13,7 +13,6 @@ import "./fonts/roboto-v27.css"
 
 async function fetchTemplate(): Promise<Document>{
 	const sourceURL = new URL(import.meta.url);
-	console.log({level:"dev", url:import.meta.url, urlstr: String(sourceURL)} )
 	const sourceOrigin = sourceURL.origin;
 	
 	const url = new URL("/templates.scd", sourceOrigin);
