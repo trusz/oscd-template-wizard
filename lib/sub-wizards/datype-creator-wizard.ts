@@ -33,7 +33,7 @@ export function createElement(
     return element;
 }
 
-@customElement(TAG_NAME)
+// @customElement(TAG_NAME)
 export class DATypeCreatorWizard extends LitElement {
     
     @property({ type: Document}) templates: Document | undefined

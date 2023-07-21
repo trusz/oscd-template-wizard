@@ -1,4 +1,5 @@
 import "./sub-wizards/datype-creator-wizard"
+import { DATypeCreatorWizard } from  "./sub-wizards/datype-creator-wizard"
 import {
 	html,
 	property,
@@ -7,6 +8,7 @@ import {
 	state,
   } from 'lit-element';
 import "./fonts/roboto-v27.css"
+import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 // import "./fonts/roboto-mono-v13.css"
 // import "./icons/material-icons-outlined.css"
 // import "./styles.css"
@@ -26,13 +28,17 @@ async function fetchTemplate(): Promise<Document>{
 }
 
 
-export class OSCDTemplateWizard extends LitElement {
+export class OSCDTemplateWizard extends ScopedElementsMixin(LitElement) {
 
 	
 	@property() public tagName: string = "";
 	@property() public element: Element | undefined
 	@property() public parent: Element | undefined
-
+	static get scopedElements() {
+		return {
+			"oscd-datype-creator-wizard": DATypeCreatorWizard,
+		};
+	  }
 
 	@state() private templates: Document = new Document();
 
